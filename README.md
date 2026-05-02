@@ -1,138 +1,70 @@
-# AuthenticationSystem
+# Getting Started with Create React App
 
-# 🔐 Authify - Full Stack Authentication System
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## 🚀 Project Overview
+## Available Scripts
 
-Authify is a full-stack authentication system built using **React** and **Spring Boot**. It provides secure user authentication with OTP email verification, ensuring safe and reliable access control.
+In the project directory, you can run:
 
----
+### `npm start`
 
-## 🛠️ Tech Stack
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-* **Frontend:** React.js
-* **Backend:** Spring Boot
-* **Database:** MySQL
-* **Authentication:** OTP via Email (SMTP - Gmail)
-* **API:** RESTful APIs
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 
----
+### `npm test`
 
-## ✨ Features
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-* 🔑 User Registration & Login
-* 📧 Email OTP Verification
-* 🔒 Secure Authentication Flow
-* 🌐 REST API Integration
-* ⚡ Responsive UI using React
-* 🛡️ Error Handling & Validation
+### `npm run build`
 
----
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-## 📁 Project Structure
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-```
-Authify/
-│
-├── frontend/        # React Application
-├── backend/         # Spring Boot Application
-│   ├── controller/
-│   ├── service/
-│   ├── model/
-│   └── config/
-│
-└── README.md
-```
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
----
+### `npm run eject`
 
-## ⚙️ Setup Instructions
+**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-### 🔹 Backend (Spring Boot)
+If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-1. Navigate to backend folder:
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-```
-cd backend
-```
+You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-2. Configure environment variables:
+## Learn More
 
-```
-MAIL_HOST=smtp.gmail.com
-MAIL_PORT=587
-MAIL_USERNAME=yourgmail@gmail.com
-MAIL_PASSWORD=your_app_password
-MAIL_FROM=yourgmail@gmail.com
-```
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-3. Run the application:
+To learn React, check out the [React documentation](https://reactjs.org/).
 
-```
-mvn spring-boot:run
-```
+### Code Splitting
 
----
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### 🔹 Frontend (React)
+### Analyzing the Bundle Size
 
-1. Navigate to frontend folder:
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-```
-cd frontend
-```
+### Making a Progressive Web App
 
-2. Install dependencies:
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-```
-npm install
-```
+### Advanced Configuration
 
-3. Start the app:
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-```
-npm start
-```
+### Deployment
 
----
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-## 🔗 API Endpoints
+### `npm run build` fails to minify
 
-| Method | Endpoint         | Description    |
-| ------ | ---------------- | -------------- |
-| POST   | /auth/register   | Register user  |
-| POST   | /auth/send-otp   | Send OTP email |
-| POST   | /auth/verify-otp | Verify OTP     |
-| POST   | /auth/login      | User login     |
-
----
-
-## 🧪 Testing
-
-* Use Postman or frontend UI to test APIs
-* Ensure SMTP configuration is correct for OTP emails
-
----
-
-## ⚠️ Notes
-
-* Use **Gmail App Password** (not normal password)
-* Check spam folder if OTP is not received
-* Ensure backend is running on port `8080` and frontend on `3000`
-
----
-
-## 👩‍💻 Author
-
-Developed as a full-stack project using React and Spring Boot.
-
----
-
-## ⭐ Future Enhancements
-
-* JWT-based authentication
-* Password reset via email
-* Role-based access control
-* Deployment (AWS / Docker)
-
----
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
