@@ -1,70 +1,210 @@
-# Getting Started with Create React App
+# 🔐 User Authentication System (React + Spring Boot)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A full-stack web application that provides secure user authentication using **React (frontend)** and **Spring Boot (backend)**. The system allows users to register, log in, and access protected pages with proper session handling.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🚀 Features
 
-### `npm start`
+* 🔐 **User Authentication**
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+  * Login with email & password
+  * Secure validation via backend
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+* 📝 **User Registration**
 
-### `npm test`
+  * Create new accounts
+  * Prevent duplicate users
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+* 🔄 **Session Management**
 
-### `npm run build`
+  * Maintain login state
+  * Protected routes in frontend
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+* 🚪 **Logout**
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+  * Clear session/token
+  * Redirect to home page
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+* 🧭 **Navigation Flow**
 
-### `npm run eject`
+  * Home → Login/Signup → Dashboard
+  * Logout → Back to Home
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+---
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 🖥️ Tech Stack
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### 🔹 Frontend
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+* React.js
+* HTML, CSS
+* Axios (API calls)
+* React Router (navigation)
 
-## Learn More
+### 🔹 Backend
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+* Spring Boot
+* REST APIs
+* Spring Security (optional)
+* Java
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 🔹 Database
 
-### Code Splitting
+* MySQL / H2 (depending on your setup)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+## 📁 Project Structure
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```
+Authentication-System/
+│
+├── frontend/                 # React App
+│   ├── src/
+│   │   ├── components/       # Login, Signup, Dashboard
+│   │   ├── pages/
+│   │   ├── App.js
+│   │   └── index.js
+│
+├── backend/                  # Spring Boot App
+│   ├── controller/
+│   ├── service/
+│   ├── repository/
+│   ├── model/
+│   └── application.properties
+│
+└── README.md
+```
 
-### Making a Progressive Web App
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## 🔄 Application Flow
 
-### Advanced Configuration
+```
+Home Page
+   ↓
+Login / Signup
+   ↓
+Backend Authentication (Spring Boot API)
+   ↓
+Dashboard (Protected Route)
+   ↓
+Logout → Back to Home
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+---
 
-### Deployment
+## 🔗 API Endpoints (Example)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+* `POST /api/auth/signup` → Register user
+* `POST /api/auth/login` → Authenticate user
+* `GET /api/user/profile` → Fetch user data
 
-### `npm run build` fails to minify
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 🎨 UI Design
+
+* Clean login & signup forms
+* Responsive React components
+* Sidebar/dashboard after login
+* User-friendly navigation
+
+---
+
+## ⚙️ Installation & Setup
+
+### 1️⃣ Clone Repository
+
+```bash
+git clone https://github.com/your-username/authentication-system.git
+cd authentication-system
+```
+
+---
+
+### 2️⃣ Backend Setup (Spring Boot)
+
+```bash
+cd backend
+```
+
+* Configure database in `application.properties`
+* Run the application:
+
+```bash
+mvn spring-boot:run
+```
+
+---
+
+### 3️⃣ Frontend Setup (React)
+
+```bash
+cd frontend
+npm install
+npm start
+```
+
+---
+
+### 🌐 Application URLs
+
+* Frontend: http://localhost:3000
+* Backend: http://localhost:8080
+
+---
+
+## 🔐 Authentication Logic
+
+* User submits login/signup form (React)
+* Request sent to Spring Boot API
+* Backend validates credentials
+* On success:
+
+  * Returns response (JWT/session)
+  * Frontend stores token/session
+* Protected routes allow access only if logged in
+
+---
+
+## ⚠️ Limitations
+
+* Basic authentication (can be improved)
+* Token handling may be simple (if not using JWT yet)
+* UI can be further enhanced
+
+---
+
+## 📈 Future Enhancements
+
+* 🔐 JWT Authentication
+* 🔒 Password hashing (BCrypt)
+* 📧 Email verification
+* 🔑 Forgot password feature
+* ☁️ Deployment (AWS / Render / Vercel)
+* 🎨 Improved UI/UX
+
+---
+
+## 🎯 Purpose
+
+This project demonstrates:
+
+* Full-stack development (React + Spring Boot)
+* REST API integration
+* Authentication flow implementation
+* Real-world application architecture
+
+---
+
+## 👨‍💻 Author
+
+* Architha Ojha
+* GitHub: https://github.com/your-username
+
+---
+
+## ⭐ If you like this project
+
+Give it a ⭐ on GitHub and feel free to contribute!
