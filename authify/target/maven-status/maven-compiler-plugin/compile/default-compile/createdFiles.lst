@@ -1,0 +1,3 @@
+in\ojha\com\authify\controller\AuthController.class
+in\ojha\com\authify\filter\JwtRequestFilter.class
+in\ojha\com\authify\config\SecurityConfig.class
