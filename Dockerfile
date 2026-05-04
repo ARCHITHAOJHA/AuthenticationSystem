@@ -7,7 +7,8 @@ WORKDIR /app/authify
 RUN mvn clean package -DskipTests
 
 # Run stage
-FROM openjdk:17-jdk-slim
+# We changed openjdk:17-jdk-slim to eclipse-temurin:17-jre
+FROM eclipse-temurin:17-jre
 WORKDIR /app
 # Find the jar inside the authify/target folder
 COPY --from=build /app/authify/target/*.jar app.jar
