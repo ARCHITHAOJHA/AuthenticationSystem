@@ -1,8 +1,10 @@
 package in.ojha.com.authify.service;
 
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.util.Locale;
+
+import javax.net.ssl.SSLHandshakeException;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
@@ -10,8 +12,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import javax.net.ssl.SSLHandshakeException;
-import java.util.Locale;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
@@ -123,7 +125,8 @@ public class EmailService {
     public void sendResetOtpEmail(String toEmail, String otp){
 
         if (!isSmtpConfigured()) {
-            throw new IllegalStateException("SMTP is not configured. Set MAIL_USERNAME and MAIL_PASSWORD before sending OTP emails.");
+            log.warn("SMTP credentials are not configured. Skipping reset OTP email to {}.", toEmail);
+            return;
         }
 
         SimpleMailMessage message = new SimpleMailMessage();
@@ -143,7 +146,8 @@ public class EmailService {
     public void sendOtpEmail(String toEmail, String otp) {
 
         if (!isSmtpConfigured()) {
-            throw new IllegalStateException("SMTP is not configured. Set MAIL_USERNAME and MAIL_PASSWORD before sending OTP emails.");
+            log.warn("SMTP credentials are not configured. Skipping verification OTP email to {}.", toEmail);
+            return;
         }
 
         SimpleMailMessage message = new SimpleMailMessage();
