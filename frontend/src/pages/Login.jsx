@@ -121,7 +121,14 @@ const Login = () => {
         }
       }
     } catch (err) {
-      toast.error(getErrorMessage(err, "Something went wrong"));
+      if (isCreateAccount && err?.response?.status === 409) {
+        toast.error("Email already exists. Please login instead.");
+        setIsCreateAccount(false);
+        setName("");
+        setPassword("");
+      } else {
+        toast.error(getErrorMessage(err, "Something went wrong"));
+      }
     } finally {
       setLoading(false);
     }
