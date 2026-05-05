@@ -65,29 +65,27 @@ const Menubar = () => {
 
     axios.defaults.withCredentials = true;
 
+    // Navigate immediately so user can enter OTP even if sending fails
     try {
-      const response = await axios.post(`${backendURL}/send-otp`, {
-        email: userData?.email,
-      });
-
-      console.log("send-otp response", response?.status, response?.data);
-
-      if (response && (response.status === 200 || response.status === 201)) {
-        toast.success("OTP sent successfully!");
-      } else {
-        toast.error("Unable to send OTP");
-      }
-    } catch (error) {
-      console.error("send-otp error", error);
-      toast.error(error?.response?.data?.message || error?.message || "Failed to send OTP");
-    } finally {
-      // navigate even if sending failed so user can enter OTP or see more details
-      try {
-        navigate("/email-verify", { state: { email: userData?.email } });
-      } catch (navErr) {
-        console.error("Navigation error:", navErr);
-      }
+      navigate("/email-verify", { state: { email: userData?.email } });
+    } catch (navErr) {
+      console.error("Navigation error:", navErr);
     }
+
+    // Fire-and-forget OTP send so navigation is not blocked by SMTP failures
+    axios.post(`${backendURL}/send-otp`, { email: userData?.email })
+      .then((response) => {
+        console.log("send-otp response", response?.status, response?.data);
+        if (response && (response.status === 200 || response.status === 201)) {
+          toast.success("OTP sent successfully!");
+        } else {
+          toast.error("Unable to send OTP");
+        }
+      })
+      .catch((error) => {
+        console.error("send-otp error", error);
+        toast.error(error?.response?.data?.message || error?.message || "Failed to send OTP");
+      });
   };
 
   return (
