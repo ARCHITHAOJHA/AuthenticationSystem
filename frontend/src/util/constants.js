@@ -1,6 +1,3 @@
 export const AppConstants = {
-
-    BACKEND_URL: 'https://authenticationsystem-bffn.onrender.com/api/v1.0',
-
-
+    BACKEND_URL: process.env.REACT_APP_BACKEND_URL || 'https://authenticationsystem-bffn.onrender.com/api/v1.0',
 }
