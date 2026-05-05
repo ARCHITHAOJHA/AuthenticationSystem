@@ -1,23 +1,26 @@
 package in.ojha.com.authify.service;
 
 
-import in.ojha.com.authify.entity.UserEntity;
-import in.ojha.com.authify.io.ProfileRequest;
-import in.ojha.com.authify.io.ProfileResponse;
-import in.ojha.com.authify.io.UpdateProfileRequest;
-import in.ojha.com.authify.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
+import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.UUID;
-import java.util.concurrent.ThreadLocalRandom;
+import in.ojha.com.authify.entity.UserEntity;
+import in.ojha.com.authify.io.ProfileRequest;
+import in.ojha.com.authify.io.ProfileResponse;
+import in.ojha.com.authify.io.UpdateProfileRequest;
+import in.ojha.com.authify.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ProfileServiceImpl implements ProfileService{
 
     private final UserRepository userRepository;
@@ -111,27 +114,44 @@ public class ProfileServiceImpl implements ProfileService{
 
     @Override
     public void sendOtp(String email) {
+        log.info("Attempting to send OTP to email: {}", email);
+        
+        try {
+            UserEntity existingUser = userRepository.findByEmail(email)
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found:" + email));
+            
+            if (existingUser.getIsAccountVerified() != null && existingUser.getIsAccountVerified()) {
+                log.info("User {} is already verified, skipping OTP send.", email);
+                return;
+            }
+            
+            // Generate 6 digit OTP
+            String otp = String.valueOf(ThreadLocalRandom.current().nextInt(100000, 1000000));
+            log.debug("Generated OTP for {}: {}", email, otp);
 
-        UserEntity existingUser=userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found:" +email));
-        if(existingUser.getIsAccountVerified() != null && existingUser.getIsAccountVerified()){
-            return;
+            // Calculate expiry time (current time + 24 hours in milliseconds)
+            long expiryTime = System.currentTimeMillis() + (24 * 60 * 60 * 1000);
+
+            // Update the user entity
+            existingUser.setVerifyOtp(otp);
+            existingUser.setVerifyOtpExpireAt(expiryTime);
+
+            // Save to database
+            userRepository.save(existingUser);
+            log.info("OTP saved to database for email: {}", email);
+            
+            // Send email (won't throw even if SMTP is not configured)
+            emailService.sendOtpEmail(existingUser.getEmail(), otp);
+            log.info("OTP email send attempted for: {}", email);
+            
+        } catch (UsernameNotFoundException ex) {
+            log.warn("User not found when sending OTP for email: {}", email);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        } catch (Exception ex) {
+            log.error("Error sending OTP to email: {}", email, ex);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to send OTP: " + ex.getMessage());
         }
-        //Generate 6 digit Otp
-        String otp =String.valueOf(ThreadLocalRandom.current().nextInt(100000,1000000));
-
-        //calculate the expiry time(current time + 24 hour in milli seconds)
-        long expiryTime = System.currentTimeMillis() + (24 * 60 * 60 * 1000);
-
-        //update the user entity
-        existingUser.setVerifyOtp(otp);
-        existingUser.setVerifyOtpExpireAt(expiryTime);
-
-        //save to database
-        userRepository.save(existingUser);
-        emailService.sendOtpEmail(existingUser.getEmail(),otp);
-
-
+    }
 
 
 
