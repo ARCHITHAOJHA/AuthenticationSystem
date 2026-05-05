@@ -115,16 +115,16 @@ public class ProfileServiceImpl implements ProfileService{
     @Override
     public void sendOtp(String email) {
         log.info("Attempting to send OTP to email: {}", email);
-        
+
         try {
             UserEntity existingUser = userRepository.findByEmail(email)
                     .orElseThrow(() -> new UsernameNotFoundException("User not found:" + email));
-            
+
             if (existingUser.getIsAccountVerified() != null && existingUser.getIsAccountVerified()) {
                 log.info("User {} is already verified, skipping OTP send.", email);
                 return;
             }
-            
+
             // Generate 6 digit OTP
             String otp = String.valueOf(ThreadLocalRandom.current().nextInt(100000, 1000000));
             log.debug("Generated OTP for {}: {}", email, otp);
@@ -139,17 +139,15 @@ public class ProfileServiceImpl implements ProfileService{
             // Save to database
             userRepository.save(existingUser);
             log.info("OTP saved to database for email: {}", email);
-            
+
             // Send email (won't throw even if SMTP is not configured)
             emailService.sendOtpEmail(existingUser.getEmail(), otp);
             log.info("OTP email send attempted for: {}", email);
-            
+
         } catch (UsernameNotFoundException ex) {
             log.warn("User not found when sending OTP for email: {}", email);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         } catch (Exception ex) {
             log.error("Error sending OTP to email: {}", email, ex);
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to send OTP: " + ex.getMessage());
         }
     }
 
