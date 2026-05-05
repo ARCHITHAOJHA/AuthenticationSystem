@@ -153,11 +153,6 @@ public class ProfileServiceImpl implements ProfileService{
         }
     }
 
-
-
-
-    }
-
     @Override
     public void verifyOtp(String email, String otp) {
 
