@@ -149,6 +149,7 @@ const Login = () => {
               type="text"
               placeholder="Full Name"
               required
+              autoComplete="off"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
@@ -158,6 +159,7 @@ const Login = () => {
             type="email"
             placeholder="Email"
             required
+            autoComplete="off"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
@@ -166,6 +168,7 @@ const Login = () => {
             type="password"
             placeholder="Password"
             required
+            autoComplete="new-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
@@ -188,14 +191,24 @@ const Login = () => {
           {isCreateAccount ? (
             <>
               Already have an account?{" "}
-              <span onClick={() => setIsCreateAccount(false)}>
+              <span onClick={() => {
+                setIsCreateAccount(false);
+                setName("");
+                setEmail("");
+                setPassword("");
+              }}>
                 Login here
               </span>
             </>
           ) : (
             <>
-              Don’t have an account?{" "}
-              <span onClick={() => setIsCreateAccount(true)}>
+              Don't have an account?{" "}
+              <span onClick={() => {
+                setIsCreateAccount(true);
+                setName("");
+                setEmail("");
+                setPassword("");
+              }}>
                 Sign Up
               </span>
             </>
