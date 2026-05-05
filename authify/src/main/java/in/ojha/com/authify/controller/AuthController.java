@@ -1,19 +1,9 @@
 package in.ojha.com.authify.controller;
 
-import in.ojha.com.authify.io.AuthRequest;
-import in.ojha.com.authify.io.AuthResponse;
-import in.ojha.com.authify.io.AuthStateResponse;
-import in.ojha.com.authify.io.ResetPasswordRequest;
-import in.ojha.com.authify.entity.UserEntity;
-import in.ojha.com.authify.repository.UserRepository;
-import in.ojha.com.authify.service.AppUserDetailService;
-import in.ojha.com.authify.service.ProfileService;
-import in.ojha.com.authify.util.JwtUtil;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -24,12 +14,27 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
+import in.ojha.com.authify.entity.UserEntity;
+import in.ojha.com.authify.io.AuthRequest;
+import in.ojha.com.authify.io.AuthResponse;
+import in.ojha.com.authify.io.AuthStateResponse;
+import in.ojha.com.authify.io.ResetPasswordRequest;
+import in.ojha.com.authify.repository.UserRepository;
+import in.ojha.com.authify.service.AppUserDetailService;
+import in.ojha.com.authify.service.ProfileService;
+import in.ojha.com.authify.util.JwtUtil;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
@@ -61,11 +66,12 @@ public class AuthController {
                 userRepository.save(user);
             }
             
-            ResponseCookie cookie = ResponseCookie.from("jwt",jwtToken)
+                ResponseCookie cookie = ResponseCookie.from("jwt",jwtToken)
                     .httpOnly(true)
                     .path("/")
                     .maxAge(Duration.ofDays(1))
-                    .sameSite("Strict")
+                    .sameSite("None")
+                    .secure(true)
                     .build();
             Boolean isAccountVerified = user != null ? Boolean.TRUE.equals(user.getIsAccountVerified()) : false;
             return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,cookie.toString())
