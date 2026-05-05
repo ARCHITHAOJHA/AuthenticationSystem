@@ -59,29 +59,34 @@ const Menubar = () => {
 
   // 📧 Send OTP
   const sendVerificationOTP = async (e) => {
-    e.stopPropagation();
+    if (e && e.stopPropagation) e.stopPropagation();
     setDropdownOpen(false);
-    
-    try {
-      axios.defaults.withCredentials = true;
+    console.log("sendVerificationOTP clicked", userData?.email);
 
+    axios.defaults.withCredentials = true;
+
+    try {
       const response = await axios.post(`${backendURL}/send-otp`, {
         email: userData?.email,
       });
 
-      if (response.status === 200) {
+      console.log("send-otp response", response?.status, response?.data);
+
+      if (response && (response.status === 200 || response.status === 201)) {
         toast.success("OTP sent successfully!");
-        navigate("/email-verify", {
-          state: { email: userData?.email },
-        });
       } else {
         toast.error("Unable to send OTP");
       }
     } catch (error) {
-      console.error("OTP Error:", error);
-      toast.error(
-        error?.response?.data?.message || "Failed to send OTP"
-      );
+      console.error("send-otp error", error);
+      toast.error(error?.response?.data?.message || error?.message || "Failed to send OTP");
+    } finally {
+      // navigate even if sending failed so user can enter OTP or see more details
+      try {
+        navigate("/email-verify", { state: { email: userData?.email } });
+      } catch (navErr) {
+        console.error("Navigation error:", navErr);
+      }
     }
   };
 
