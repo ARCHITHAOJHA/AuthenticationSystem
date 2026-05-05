@@ -58,7 +58,10 @@ const Menubar = () => {
   };
 
   // 📧 Send OTP
-  const sendVerificationOTP = async () => {
+  const sendVerificationOTP = async (e) => {
+    e.stopPropagation();
+    setDropdownOpen(false);
+    
     try {
       axios.defaults.withCredentials = true;
 
@@ -75,6 +78,7 @@ const Menubar = () => {
         toast.error("Unable to send OTP");
       }
     } catch (error) {
+      console.error("OTP Error:", error);
       toast.error(
         error?.response?.data?.message || "Failed to send OTP"
       );
